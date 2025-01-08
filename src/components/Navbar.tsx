@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 export default function Navbar() {
     return (
       <div className="navbar bg-base-100">
@@ -24,7 +26,7 @@ export default function Navbar() {
           </ul>
         </div>
         <div className="navbar-end">
-          <a className="btn">Get Started</a>
+          <Link href="/sing-in" className="btn btn-accent">Acceder</Link>
         </div>
       </div>
     )
