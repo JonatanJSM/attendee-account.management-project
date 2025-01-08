@@ -26,7 +26,7 @@ export default function Navbar() {
           </ul>
         </div>
         <div className="navbar-end">
-          <Link href="/sing-in" className="btn btn-accent">Acceder</Link>
+          <Link href="/sign-in" className="btn btn-accent">Acceder</Link>
         </div>
       </div>
     )

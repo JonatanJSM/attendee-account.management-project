@@ -1,6 +1,21 @@
+"use client";
+
 import { Menu, Bell, User } from 'lucide-react'
+import { useRouter } from "next/navigation";
+import { signOut } from "@/lib/auth-client";
 
 export default function Header() {
+  
+  const handleLogout = async () => {
+    await signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push("/login"); // Redirige a la página de login
+        },
+      },
+    });
+  };
+  const router = useRouter();
   return (
     <div className="navbar bg-base-100 shadow-md">
       <div className="flex-none lg:hidden">
@@ -24,7 +39,9 @@ export default function Header() {
           <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
             <li><a>Profile</a></li>
             <li><a>Settings</a></li>
-            <li><a>Logout</a></li>
+            <li>
+            <button onClick={handleLogout}>Logout</button>
+            </li>
           </ul>
         </div>
       </div>

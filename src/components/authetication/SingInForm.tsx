@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { signIn } from "@/lib/auth-client";
+import { toast } from "sonner";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
@@ -71,16 +73,25 @@ export default function SignIn() {
           className={`btn btn-primary w-full ${loading ? "btn-disabled loading" : ""}`}
           disabled={loading}
           onClick={async () => {
-            setLoading(true);
-            try {
-              // Simulate sign-in logic
-              console.log("Sign in with", { email, password, rememberMe });
-              router.push("/dashboard");
-            } catch (err) {
-              console.error("Error signing in:", err);
-            } finally {
-              setLoading(false);
-            }
+            await signIn.email({
+              email,
+              password,
+              callbackURL: "/dashboard",
+              fetchOptions: {
+                onResponse: () => {
+                  setLoading(false);
+                },
+                onRequest: () => {
+                  setLoading(true);
+                },
+                onError: (ctx) => {
+                  toast.error(ctx.error.message);
+                },
+                onSuccess: async () => {
+                  router.push("/");
+                },
+              },
+            });
           }}
         >
           {loading ? "Loading..." : "Sign In"}
