@@ -88,7 +88,7 @@ export default function SignIn() {
                   toast.error(ctx.error.message);
                 },
                 onSuccess: async () => {
-                  router.push("/");
+                  router.push("/dashboard");
                 },
               },
             });

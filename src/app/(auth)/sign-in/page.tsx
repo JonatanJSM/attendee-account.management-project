@@ -1,7 +1,6 @@
 "use client";
 
 import SignIn from "@/components/authetication/SingInForm";
-import { SignUp } from "@/components/authetication/SingUpForm";
 import { Tabs } from "@/components/authetication/tabs2";
 
 export default function Page() {
@@ -20,11 +19,6 @@ export default function Page() {
               title: "Sign In",
               value: "sign-in",
               content: <SignIn />,
-            },
-            {
-              title: "Sign Up",
-              value: "sign-up",
-              content: <SignUp />,
             },
           ]}
           containerClassName="tabs-boxed bg-base-100"

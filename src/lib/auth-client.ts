@@ -23,5 +23,8 @@ export const {
 	signUp,
 	signIn,
 	signOut,
-	useSession
+	useSession,
 } = client;
+
+
+export const client2 = client;

@@ -8,6 +8,7 @@ const authRoutes = ["/sign-in", "/sign-up"];
 const passwordRoutes = ["/reset-password", "/forgot-password"];
 const adminRoutes = ["/admin"];
 const protectedRoutes = ["/dashboard", ...adminRoutes];
+const analyticsRoute = "/dashboard/analytics";
 
 export default async function authMiddleware(request: NextRequest) {
   const pathName = request.nextUrl.pathname;
@@ -40,12 +41,17 @@ export default async function authMiddleware(request: NextRequest) {
 
     // Si el usuario está autenticado y quiere acceder a rutas públicas (sign-in, sign-up).
     if (isAuthRoute || isPasswordRoute) {
-      return NextResponse.redirect(new URL("/", request.url));
+      return NextResponse.redirect(new URL("/dashboard", request.url));
     }
 
     // Validar acceso de admin.
     if (isAdminRoute && session.user.role !== "admin") {
       return NextResponse.redirect(new URL("/", request.url));
+    }
+
+    // Validar acceso a /dashboard/analytics para "admin" y "tesorero".
+    if (pathName === analyticsRoute && !["admin", "tesorero"].includes(session.user.role || "")) {
+      return NextResponse.redirect(new URL("/dashboard", request.url)); // Redirige si no es admin ni tesorero
     }
 
     // Si todo está bien, permitir el acceso.
