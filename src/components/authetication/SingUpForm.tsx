@@ -112,6 +112,7 @@ export function SignUp() {
           </label>
           <div className="flex items-center gap-4">
             {imagePreview && (
+              // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={imagePreview}
                 alt="Preview"

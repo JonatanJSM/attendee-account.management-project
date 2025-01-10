@@ -15,12 +15,14 @@ export default async function authMiddleware(request: NextRequest) {
   const isAuthRoute = authRoutes.includes(pathName);
   const isPasswordRoute = passwordRoutes.includes(pathName);
   const isAdminRoute = adminRoutes.includes(pathName);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isProtectedRoute = protectedRoutes.some((route) =>
     pathName.startsWith(route)
   );
 
   try {
     // Obtener la sesión desde la API de Better Auth.
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { data: session, error } = await betterFetch<Session>(
       "/api/auth/get-session",
       {

@@ -1,5 +1,6 @@
 "use client";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Menu, Bell, User } from 'lucide-react'
 import { useRouter } from "next/navigation";
 import { signOut } from "@/lib/auth-client";
