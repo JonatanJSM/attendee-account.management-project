@@ -11,7 +11,7 @@ export default function Header() {
     await signOut({
       fetchOptions: {
         onSuccess: () => {
-          router.push("/login"); // Redirige a la página de login
+          router.push("/"); // Redirige a la página de login
         },
       },
     });

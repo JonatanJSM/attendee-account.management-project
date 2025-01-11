@@ -5,7 +5,6 @@ import type { Session } from "@/lib/auth-types";
 
 // Rutas protegidas
 const authRoutes = ["/sign-in", "/sign-up"];
-const passwordRoutes = ["/reset-password", "/forgot-password"];
 const adminRoutes = ["/admin"];
 const protectedRoutes = ["/dashboard", ...adminRoutes];
 const analyticsRoute = "/dashboard/analytics";
@@ -13,9 +12,7 @@ const analyticsRoute = "/dashboard/analytics";
 export default async function authMiddleware(request: NextRequest) {
   const pathName = request.nextUrl.pathname;
   const isAuthRoute = authRoutes.includes(pathName);
-  const isPasswordRoute = passwordRoutes.includes(pathName);
   const isAdminRoute = adminRoutes.includes(pathName);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isProtectedRoute = protectedRoutes.some((route) =>
     pathName.startsWith(route)
   );
@@ -35,14 +32,19 @@ export default async function authMiddleware(request: NextRequest) {
 
     // Si no hay sesión y es una ruta protegida.
     if (!session) {
-      if (isAuthRoute || isPasswordRoute) {
-        return NextResponse.next(); // Permitir acceso a rutas públicas de autenticación.
+      if (isAuthRoute) {
+        return NextResponse.next();
       }
-      return NextResponse.redirect(new URL("/sign-in", request.url));
+
+      if (isProtectedRoute){
+        return NextResponse.redirect(new URL("/sign-in", request.url));
+      }else{
+        return NextResponse.next();
+      }
     }
 
     // Si el usuario está autenticado y quiere acceder a rutas públicas (sign-in, sign-up).
-    if (isAuthRoute || isPasswordRoute) {
+    if (isAuthRoute) {
       return NextResponse.redirect(new URL("/dashboard", request.url));
     }
 
@@ -56,7 +58,6 @@ export default async function authMiddleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/dashboard", request.url)); // Redirige si no es admin ni tesorero
     }
 
-    // Si todo está bien, permitir el acceso.
     return NextResponse.next();
   } catch (error) {
     console.error("Error en el middleware:", error);
